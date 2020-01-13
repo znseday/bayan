@@ -38,11 +38,11 @@ else()
 		COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra")
 endif()
 
-#set_target_properties(bayan my_tests PROPERTIES
-#    COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
+set_target_properties(bayan PROPERTIES
+    COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
 	#COMPILE_DEFINITIONS BOOST_OPTIONS_DYN_LINK
-#    INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
-#)
+    INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
+)
 
 target_link_libraries(bayan
     ${Boost_LIBRARIES}
