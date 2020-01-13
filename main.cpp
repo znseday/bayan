@@ -1,73 +1,96 @@
 #include <iostream>
 #include <vector>
-#include <iterator>
-#include <algorithm>
-#include <cassert>
+//#include <iterator>
+//#include <algorithm>
+//#include <cassert>
 #include <fstream>
+#include <boost/program_options.hpp>
 
 #include "bayan.h"
+
+namespace opt = boost::program_options;
 
 using namespace std;
 
 void TestBasic();
-void MainTask();
+//void MainTask();
+void PrintOptions(const Options& options);
 
 int main(int argc, char *argv[])
 {
-    //for(int i = 1; i < argc; i++)
-    //    if (strcmp(argv[1], "-ext") == 0)
-    //        IsExOutput = true;
 
 #if (defined WIN32) || (defined WIN64)
     cout << MY_P_FUNC << endl;              // for debugging
 
     //MY_DEBUG_ONLY(TestBasic();)           // for debugging
-
-    //ifstream i_stream = ifstream("my_own_test.txt");
-    //if (!i_stream)
-    //{
-    //    cout << "My error: the input file not found" << endl;
-    //    exit(0);
-    //}
 #else
-    istream &i_stream = cin;
+    //istream &i_stream = cin;
 #endif
 
-    MY_DEBUG_ONLY(cout << "Homework bayan (DEBUG detected)" << endl;)
+	MY_DEBUG_ONLY(cout << "Homework bayan (DEBUG detected)" << endl;)
 
-	TestBasic();
+	try 
+	{
+		Options options;
+		if (!GetOptions(options, argc, argv)) 
+		{
+			cout << "Error: something's wrongs with options" << endl;
+			return -1;
+		}
 
-    //vector<string> srcData;
+		MY_DEBUG_ONLY(PrintOptions(options); )
 
-    //string line;
-    //while (getline(i_stream, line))
-    //{
-    //    #if (defined WIN32) || (defined WIN64)
-    //        cout << line << endl; // just echo
-    //    #else
-    //        // nothing
-    //    #endif
-
-    //    rt.Insert(line);
-    //    srcData.emplace_back(line);
-    //}
-
-    MainTask();
+		if (IsIdenticFiles(options))
+			cout << "Files are identical" << endl;
+		else
+			cout << "Files are NOT identical" << endl;
+		
+	}
+	catch (const opt::error& e) 
+	{
+		cerr << e.what() << endl;
+		return -1;
+	}
+	catch (const exception& e) 
+	{
+		cerr << e.what() << endl;
+		return -1;
+	}
 
     return 0;
 }
+//--------------------------------------------------------------------
 
 void TestBasic()
 {
     cout << endl << "TestBasic" << endl;
-
     cout << "//-------------------" << endl;
 }
+//--------------------------------------------------------------------
 
-void MainTask()
+void PrintOptions(const Options &options)
 {
-    cout << endl << "TestMainTask" << endl;
+	cout << endl << "PrintOptions" << endl;
+	cout << "options.BlockSize = " << options.BlockSize << endl;
 
-    cout << "//-------------------" << endl;
+	for (const auto& f : options.Files)
+		cout << "options.File = " << f << endl;
+
+	switch (options.HashType)
+	{
+	case HashEnum::CRC32:
+		cout << "HashType = HashEnum::CRC32" << endl;
+		break;
+	case HashEnum::SHA1:
+		cout << "HashType = HashEnum::SHA1" << endl;
+		break;
+	default:
+		cout << "Something's wrong with HashEnum" << endl;
+	}
+
+	cout << "//-------------------" << endl;
 }
+//--------------------------------------------------------------------
+
+
 

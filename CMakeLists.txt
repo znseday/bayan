@@ -9,8 +9,15 @@ else()
 endif()
 
 #find_package(Threads REQUIRED)
-find_package(Boost COMPONENTS unit_test_framework REQUIRED)
+find_package(Boost COMPONENTS program_options unit_test_framework filesystem REQUIRED)
 
+if (WIN32)
+    # disable autolinking in boost
+    add_definitions( -DBOOST_ALL_NO_LIB )
+
+    add_definitions( -DBOOST_ALL_DYN_LINK )
+endif()
+set (Boost_USE_STATIC_LIBS OFF CACHE BOOL "use static libraries from Boost")
 
 if(WIN32 OR WIN64)
     add_executable(bayan main.cpp bayan.cpp bayan.h)
@@ -18,31 +25,32 @@ else()
     add_executable(bayan main.cpp bayan.cpp)
 endif()
 
-add_executable(my_tests my_test.cpp)
+#add_executable(my_tests my_test.cpp)
 
 if(WIN32 OR WIN64)
-	set_target_properties(bayan my_tests PROPERTIES
+	set_target_properties(bayan PROPERTIES
 		CXX_STANDARD 17
 		CXX_STANDARD_REQUIRED ON)
 else()
-	set_target_properties(bayan my_tests PROPERTIES
+	set_target_properties(bayan PROPERTIES
 		CXX_STANDARD 17
 		CXX_STANDARD_REQUIRED ON
 		COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra")
 endif()
 
-set_target_properties(bayan my_tests PROPERTIES
-    COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
-    INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
-)
+#set_target_properties(bayan my_tests PROPERTIES
+#    COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
+	#COMPILE_DEFINITIONS BOOST_OPTIONS_DYN_LINK
+#    INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
+#)
 
 target_link_libraries(bayan
     ${Boost_LIBRARIES}
 )
 
-target_link_libraries(my_tests
-    ${Boost_LIBRARIES}
-)
+#target_link_libraries(my_tests
+#    ${Boost_LIBRARIES}
+#)
 
 install(TARGETS bayan RUNTIME DESTINATION bin)
 
@@ -60,4 +68,4 @@ include(CPack)
 
 enable_testing()
 
-add_test(my_tests_ my_tests)
+#add_test(my_tests_ my_tests)
