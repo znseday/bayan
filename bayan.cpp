@@ -116,10 +116,11 @@ bool IsIdenticFiles(const Options& options)
 			return false;
 	}
 
-	//vector<ifstream> fileStreams(options.Files.size());
-	vector<ifstream*> fileStreams;
-	for (int i = 0; i < options.Files.size(); i++)
-		fileStreams.push_back(new ifstream);
+	vector<ifstream> fileStreams(options.Files.size());
+
+	//vector<ifstream*> fileStreams;
+	//for (size_t i = 0; i < options.Files.size(); i++)
+	//	fileStreams.push_back(new ifstream);
 
 	vector<char> buf(options.BlockSize);
 
@@ -134,9 +135,9 @@ bool IsIdenticFiles(const Options& options)
 		{
 			if (i == 0)
 			{
-				fileStreams[j]->rdbuf()->pubsetbuf(nullptr, 0); // Disable buffering
-				fileStreams[j]->open(options.Files[j], ios::in || ios::binary);
-				if (!fileStreams[j]->is_open())
+				fileStreams[j].rdbuf()->pubsetbuf(nullptr, 0); // Disable buffering
+				fileStreams[j].open(options.Files[j], ios::in || ios::binary);
+				if (!fileStreams[j].is_open())
 				{
 					cout << "Error: file couldn't open" << endl;
 					return false;
@@ -145,11 +146,11 @@ bool IsIdenticFiles(const Options& options)
 		
 			if (i == blockCount - 1)
 			{
-				fileStreams[j]->read(buf.data(), lastSize);
+				fileStreams[j].read(buf.data(), lastSize);
 				memset(buf.data() + lastSize, 0, buf.size() - lastSize);
 			}
 			else
-				fileStreams[j]->read(buf.data(), buf.size());
+				fileStreams[j].read(buf.data(), buf.size());
 	
 			switch (options.HashType)
 			{
