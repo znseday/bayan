@@ -123,11 +123,11 @@ bool IsIdenticFiles(const Options& options)
 	size_t blockCount = firstSize / options.BlockSize + 1;
 	size_t lastSize = firstSize % options.BlockSize;
 
-	for (int i = 0; i < blockCount; i++)
+	for (size_t i = 0; i < blockCount; i++)
 	{
 		string fisrtHash, curHash;
 
-		for (int j = 0; j < options.Files.size(); j++)
+		for (size_t j = 0; j < options.Files.size(); j++)
 		{
 			if (i == 0)
 			{
