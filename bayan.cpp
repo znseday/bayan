@@ -1,8 +1,12 @@
 #include <iostream>
 #include <sstream>
 
-//#include <boost/uuid/sha1.hpp>
+#if ((defined WIN32) || (defined WIN64))
 #include <boost/uuid/detail/sha1.hpp>
+#else
+#include <boost/uuid/sha1.hpp>
+#endif
+
 
 #include <boost/functional/hash.hpp>
 #include <boost/crc.hpp>
