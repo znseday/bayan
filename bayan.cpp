@@ -35,9 +35,9 @@ bool GetOptions(Options& options, int argc, char* argv[])
 {
 	opt::options_description desc("Usage: bayan [OPTIONS]... [FILES]...\nAll options:"); 
 	desc.add_options()
-		("help,h", "Help")
+		("help", "Help")
 		("blocksize,b", opt::value<int>()->default_value(64), "Block size")
-		("hash,H", opt::value<std::string>(), "Hash type (boost, crc32)")
+		("hash,h", opt::value<std::string>(), "Hash type (boost, crc32)")
 		("files,f", opt::value<std::vector<std::string>>()->multitoken()->zero_tokens()->composing(), "files to check");
 
 	opt::positional_options_description posDescription;
@@ -116,7 +116,10 @@ bool IsIdenticFiles(const Options& options)
 			return false;
 	}
 
-	vector<ifstream> fileStreams(options.Files.size());
+	//vector<ifstream> fileStreams(options.Files.size());
+	vector<ifstream*> fileStreams;
+	for (int i = 0; i < options.Files.size(); i++)
+		fileStreams.push_back(new ifstream);
 
 	vector<char> buf(options.BlockSize);
 
@@ -131,9 +134,9 @@ bool IsIdenticFiles(const Options& options)
 		{
 			if (i == 0)
 			{
-				fileStreams[j].rdbuf()->pubsetbuf(nullptr, 0); // Disable buffering
-				fileStreams[j].open(options.Files[j], ios::in || ios::binary);
-				if (!fileStreams[j].is_open())
+				fileStreams[j]->rdbuf()->pubsetbuf(nullptr, 0); // Disable buffering
+				fileStreams[j]->open(options.Files[j], ios::in || ios::binary);
+				if (!fileStreams[j]->is_open())
 				{
 					cout << "Error: file couldn't open" << endl;
 					return false;
@@ -142,11 +145,11 @@ bool IsIdenticFiles(const Options& options)
 		
 			if (i == blockCount - 1)
 			{
-				fileStreams[j].read(buf.data(), lastSize);
+				fileStreams[j]->read(buf.data(), lastSize);
 				memset(buf.data() + lastSize, 0, buf.size() - lastSize);
 			}
 			else
-				fileStreams[j].read(buf.data(), buf.size());
+				fileStreams[j]->read(buf.data(), buf.size());
 	
 			switch (options.HashType)
 			{
