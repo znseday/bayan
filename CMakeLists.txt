@@ -38,6 +38,8 @@ else()
 		CXX_STANDARD 17
 		CXX_STANDARD_REQUIRED ON
 		COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra")
+		
+	set(CMAKE_BUILD_TYPE Release)
 endif()
 
 set_target_properties(bayan PROPERTIES
