@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 #if ((defined WIN32) || (defined WIN64))
 #include <boost/uuid/detail/sha1.hpp>
@@ -136,7 +137,7 @@ bool IsIdenticFiles(const Options& options)
 			if (i == 0)
 			{
 				fileStreams[j].rdbuf()->pubsetbuf(nullptr, 0); // Disable buffering
-				fileStreams[j].open(options.Files[j], ios::in || ios::binary);
+				fileStreams[j].open(options.Files[j], ios::in | ios::binary);
 				if (!fileStreams[j].is_open())
 				{
 					cout << "Error: file couldn't open" << endl;
