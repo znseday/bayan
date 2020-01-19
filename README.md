@@ -7,7 +7,7 @@ The task description is in 'Task_bayan.pdf'
 
 ```bash
 -h, --help			Show help
--H, --hash			Hash type: SHA1, *crc32*
+-H, --hash			Hash type: SHA1, crc32
 -b, --blocksize	Block size (in bytes), default value = 64
 -f, --files			files to check
 ```
