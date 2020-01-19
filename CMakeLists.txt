@@ -11,13 +11,15 @@ endif()
 #find_package(Threads REQUIRED)
 find_package(Boost COMPONENTS program_options unit_test_framework filesystem REQUIRED)
 
-if (WIN32)
+if (WIN32 OR WIN64)
     # disable autolinking in boost
     add_definitions( -DBOOST_ALL_NO_LIB )
 
+	set (Boost_USE_STATIC_LIBS OFF CACHE BOOL "use static libraries from Boost")
+
     add_definitions( -DBOOST_ALL_DYN_LINK )
 endif()
-set (Boost_USE_STATIC_LIBS OFF CACHE BOOL "use static libraries from Boost")
+
 
 if(WIN32 OR WIN64)
     add_executable(bayan main.cpp bayan.cpp bayan.h)
