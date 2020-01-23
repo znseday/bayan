@@ -20,12 +20,7 @@ if (WIN32 OR WIN64)
     add_definitions( -DBOOST_ALL_DYN_LINK )
 endif()
 
-
-if(WIN32 OR WIN64)
-    add_executable(bayan main.cpp bayan.cpp bayan.h)
-else()
-    add_executable(bayan main.cpp bayan.cpp)
-endif()
+add_executable(bayan main.cpp bayan.cpp bayan.h)
 
 #add_executable(my_tests my_test.cpp)
 
@@ -38,13 +33,16 @@ else()
 		CXX_STANDARD 17
 		CXX_STANDARD_REQUIRED ON
 		COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra")
-		
-	set(CMAKE_BUILD_TYPE Release)
+
+		set(CMAKE_BUILD_TYPE Release)
 endif()
+
+target_include_directories(bayan
+        PRIVATE ${Boost_INCLUDE_DIR}
+)
 
 set_target_properties(bayan PROPERTIES
     #COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
-	#COMPILE_DEFINITIONS BOOST_OPTIONS_DYN_LINK
     INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
 )
 

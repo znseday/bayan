@@ -38,8 +38,8 @@ bool GetOptions(Options& options, int argc, char* argv[])
 	desc.add_options()
 		("help", "Help")
 		("blocksize,b", opt::value<int>()->default_value(64), "Block size")
-		("hash,h", opt::value<std::string>(), "Hash type (boost, crc32)")
-		("files,f", opt::value<std::vector<std::string>>()->multitoken()->zero_tokens()->composing(), "files to check");
+		("hash,h", opt::value<std::string>(), "Hash type (sha1, crc32)")
+		("files,f", opt::value<std::vector<std::string>>()->multitoken()->zero_tokens()->composing(), "Files to check");
 
 	opt::positional_options_description posDescription;
 	posDescription.add("files", -1);
