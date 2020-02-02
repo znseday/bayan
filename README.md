@@ -1,4 +1,4 @@
-# bayan
+# bayan  [![Build Status](https://travis-ci.org/znseday/bayan.svg?branch=master)](https://travis-ci.org/znseday/bayan)
 hw_09 for OTUS
 
 The task description is in 'Task_bayan.pdf'
